@@ -1,5 +1,4 @@
-# windev.github.io
-Final Year Project(FYP), Location Based Wikipedia
+# Windev, Location Based Wikipedia
 
 What this project aims to do:
 -Detect user's location
