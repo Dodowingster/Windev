@@ -1,6 +1,6 @@
 # Windev, Location Based Wikipedia
 
 What this project aims to do:
--Detect user's location
--Implement Text-To-Speech
--Display/Read the information regarding landscape
+<br />-Detect user's location
+<br />-Implement Text-To-Speech
+<br />-Display/Read the information regarding landscape
