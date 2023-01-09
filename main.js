@@ -59,21 +59,6 @@ button.addEventListener("click", function() {
               extractContainer.style.display = 'block';
               button.textContent = 'Hide Details';
             }
-      
-            // Add a speech button
-            var speechButton = document.createElement('button');
-            speechButton.textContent = 'Speak';
-            extractContainer.parentNode.appendChild(speechButton);
-            
-            // Set up the speech synthesis API
-            var synth = window.speechSynthesis;
-            var voices = synth.getVoices();
-            
-            speechButton.addEventListener('click', function() {
-              var extract = extractContainer.textContent;
-              var utterance = new SpeechSynthesisUtterance(extract);
-              synth.speak(utterance);
-            });
           });
         });
       }
