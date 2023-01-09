@@ -62,33 +62,22 @@ button.addEventListener("click", function() {
             } else {
               extractContainer.style.display = 'block';
               button.textContent = 'Hide Details';
-
-              // Create the "speak" button
-              var speakButton = document.createElement('button');
-              speakButton.classList.add('speak-button');
-              speakButton.textContent = 'Play';
-
-              // Create the "stop" button
-              var stopButton = document.createElement('button');
-              stopButton.classList.add('stop-button');
-              stopButton.textContent = 'Stop';
-
-              // Add the buttons to the DOM
-              extractContainer.parentNode.appendChild(speakButton);
-              extractContainer.parentNode.appendChild(stopButton);
-
+              // Add a speech button
+              var speechButton = document.createElement('button');
+              speechButton.innerHTML = '<button class="speak-button">Speak</button><button class="stop-button">Stop</button>';
+              extractContainer.parentNode.appendChild(speechButton);
+              button.speechButton = speechButton;
               // Set up the speech synthesis API
               var synth = window.speechSynthesis;
               var voices = synth.getVoices();
-
-              speakButton.addEventListener('click', function() {
-                var extract = extractContainer.textContent;
-                var utterance = new SpeechSynthesisUtterance(extract);
-                synth.speak(utterance);
-              });
-
-              stopButton.addEventListener('click', function() {
-                synth.cancel();
+              speechButton.addEventListener('click', function(event) {
+                if (event.target.classList.contains('speak-button')) {
+                  var extract = extractContainer.textContent;
+                  var utterance = new SpeechSynthesisUtterance(extract);
+                  synth.speak(utterance);
+                } else if (event.target.classList.contains('stop-button')) {
+                  synth.cancel();
+                }
               });
             }
           });
