@@ -24,10 +24,17 @@ button.addEventListener("click", function() {
             var locations = response.query.geosearch;
             var locationsList = "";
             for (var place in locations) {
-                locationsList += "<li>" + locations[place].title + "</li>";
+                var locationUrl = "https://en.wikipedia.org/w/api.php?origin=*&action=query&format=json&prop=extracts&exintro=&explaintext=&titles=" + encodeURIComponent(locations[place].title);
+                fetch(locationUrl)
+                    .then(function(response){return response.json();})
+                    .then(function(response) {
+                        var page = response.query.pages[Object.keys(response.query.pages)[0]];
+                        locationsList += "<li>" + page.title + " - " + page.extract + "</li>";
+                        var locationsDiv = document.getElementById("locations");
+                        locationsDiv.innerHTML = "<ul>" + locationsList + "</ul>";
+                    })
+                    .catch(function(error){console.log(error);});
             }
-            var locationsDiv = document.getElementById("locations");
-            locationsDiv.innerHTML = "<ul>" + locationsList + "</ul>";
         })
         .catch(function(error){console.log(error);});
   });
