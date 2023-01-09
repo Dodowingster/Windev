@@ -19,23 +19,42 @@ button.addEventListener("click", function() {
     Object.keys(params).forEach(function(key){url += "&" + key + "=" + params[key];});
 
     fetch(url)
-        .then(function(response){return response.json();})
-        .then(function(response) {
-            var locations = response.query.geosearch;
-            var locationsList = "";
-            for (var place in locations) {
-                var locationUrl = "https://en.wikipedia.org/w/api.php?origin=*&action=query&format=json&prop=extracts&exintro=&explaintext=&titles=" + encodeURIComponent(locations[place].title);
-                fetch(locationUrl)
-                    .then(function(response){return response.json();})
-                    .then(function(response) {
-                        var page = response.query.pages[Object.keys(response.query.pages)[0]];
-                        locationsList += "<li>" + page.title + " - " + page.extract + "</li>";
-                        var locationsDiv = document.getElementById("locations");
-                        locationsDiv.innerHTML = "<ul>" + locationsList + "</ul>";
-                    })
-                    .catch(function(error){console.log(error);});
-            }
-        })
-        .catch(function(error){console.log(error);});
-  });
+    .then(function(response){return response.json();})
+    .then(function(response) {
+      var locations = response.query.geosearch;
+      var locationsList = "";
+      for (var place in locations) {
+        var locationUrl = "https://en.wikipedia.org/w/api.php?origin=*&action=query&format=json&prop=extracts&exintro=&explaintext=&titles=" + encodeURIComponent(locations[place].title);
+        fetch(locationUrl)
+          .then(function(response){return response.json();})
+          .then(function(response) {
+            var page = response.query.pages[Object.keys(response.query.pages)[0]];
+            locationsList += `
+              <li>
+                ${page.title} - 
+                <div class="extract-container" style="display:none">${page.extract}</div>
+                <button class="reveal-button">Reveal Details</button>
+              </li>
+            `;
+            var locationsDiv = document.getElementById("locations");
+            locationsDiv.innerHTML = "<ul>" + locationsList + "</ul>";
+  
+            // Add event listeners to reveal buttons
+            addRevealButtonListeners();
+          })
+          .catch(function(error){console.log(error);});
+      }
+    })
+    .catch(function(error){console.log(error);});
+  
+  function addRevealButtonListeners() {
+    var revealButtons = document.querySelectorAll('.reveal-button');
+    revealButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        var extractContainer = button.previousElementSibling;
+        extractContainer.style.display = 'block';
+      });
+    });
+  };
+});
 });
