@@ -47,14 +47,20 @@ button.addEventListener("click", function() {
     })
     .catch(function(error){console.log(error);});
   
-  function addRevealButtonListeners() {
-    var revealButtons = document.querySelectorAll('.reveal-button');
-    revealButtons.forEach(function(button) {
-      button.addEventListener('click', function() {
-        var extractContainer = button.previousElementSibling;
-        extractContainer.style.display = 'block';
-      });
+    function addRevealButtonListeners() {
+        var revealButtons = document.querySelectorAll('.reveal-button');
+        revealButtons.forEach(function(button) {
+          button.addEventListener('click', function() {
+            var extractContainer = button.previousElementSibling;
+            if (extractContainer.style.display === 'block') {
+              extractContainer.style.display = 'none';
+              button.textContent = 'Reveal Details';
+            } else {
+              extractContainer.style.display = 'block';
+              button.textContent = 'Hide Details';
+            }
+          });
+        });
+      }
     });
-  };
-});
-});
+});      
