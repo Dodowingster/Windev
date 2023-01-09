@@ -40,27 +40,45 @@ button.addEventListener("click", function() {
             locationsDiv.innerHTML = "<ul>" + locationsList + "</ul>";
   
             // Add event listeners to reveal buttons
-            addRevealButtonListeners();
-          })
-          .catch(function(error){console.log(error);});
-      }
-    })
-    .catch(function(error){console.log(error);});
-  
-    function addRevealButtonListeners() {
-        var revealButtons = document.querySelectorAll('.reveal-button');
-        revealButtons.forEach(function(button) {
-          button.addEventListener('click', function() {
-            var extractContainer = button.previousElementSibling;
-            if (extractContainer.style.display === 'block') {
-              extractContainer.style.display = 'none';
-              button.textContent = 'Reveal Details';
-            } else {
-              extractContainer.style.display = 'block';
-              button.textContent = 'Hide Details';
-            }
-          });
+  // Add event listeners to reveal buttons
+  addRevealButtonListeners();
+
+  function addRevealButtonListeners() {
+    var revealButtons = document.querySelectorAll('.reveal-button');
+    revealButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        var extractContainer = button.previousElementSibling;
+        if (extractContainer.style.display === 'block') {
+          extractContainer.style.display = 'none';
+          button.textContent = 'Reveal Details';
+        } else {
+          extractContainer.style.display = 'block';
+          button.textContent = 'Hide Details';
+        }
+      });
+
+      // Add a TTS button to the current list item
+      var ttsButton = document.createElement('button');
+      ttsButton.textContent = 'Speak';
+      ttsButton.classList.add('tts-button');
+      button.parentNode.appendChild(ttsButton);
+
+      // Add a click event listener to the TTS button
+      ttsButton.addEventListener('click', function() {
+        // Get the text to be read aloud from the extract container element
+        var extractContainer = ttsButton.previousElementSibling.previousElementSibling;
+        var textToSpeak = extractContainer.textContent;
+
+        // Create a new SpeechSynthesisUtterance object and set its text
+        var utterance = new SpeechSynthesisUtterance(textToSpeak);
+
+        // Play the text aloud
+        window.speechSynthesis.speak(utterance);
+                            });
+                        });
+                    }
+                });
+             };
         });
-      }
     });
-});      
+});
