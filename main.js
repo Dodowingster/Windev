@@ -64,16 +64,20 @@ button.addEventListener("click", function() {
               button.textContent = 'Hide Details';
               // Add a speech button
               var speechButton = document.createElement('button');
-              speechButton.textContent = 'Speak';
+              speechButton.innerHTML = '<button class="speak-button">Speak</button><button class="stop-button">Stop</button>';
               extractContainer.parentNode.appendChild(speechButton);
               button.speechButton = speechButton;
               // Set up the speech synthesis API
               var synth = window.speechSynthesis;
               var voices = synth.getVoices();
-              speechButton.addEventListener('click', function() {
-                var extract = extractContainer.textContent;
-                var utterance = new SpeechSynthesisUtterance(extract);
-                synth.speak(utterance);
+              speechButton.addEventListener('click', function(event) {
+                if (event.target.classList.contains('speak-button')) {
+                  var extract = extractContainer.textContent;
+                  var utterance = new SpeechSynthesisUtterance(extract);
+                  synth.speak(utterance);
+                } else if (event.target.classList.contains('stop-button')) {
+                  synth.cancel();
+                }
               });
             }
           });
