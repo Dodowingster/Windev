@@ -55,27 +55,29 @@ button.addEventListener("click", function() {
             if (extractContainer.style.display === 'block') {
               extractContainer.style.display = 'none';
               button.textContent = 'Reveal Details';
+              if (button.speechButton) {
+                button.speechButton.parentNode.removeChild(button.speechButton);
+                delete button.speechButton;
+              }
             } else {
               extractContainer.style.display = 'block';
               button.textContent = 'Hide Details';
+              // Add a speech button
+              var speechButton = document.createElement('button');
+              speechButton.textContent = 'Speak';
+              extractContainer.parentNode.appendChild(speechButton);
+              button.speechButton = speechButton;
+              // Set up the speech synthesis API
+              var synth = window.speechSynthesis;
+              var voices = synth.getVoices();
+              speechButton.addEventListener('click', function() {
+                var extract = extractContainer.textContent;
+                var utterance = new SpeechSynthesisUtterance(extract);
+                synth.speak(utterance);
+              });
             }
-      
-            // Add a speech button
-            var speechButton = document.createElement('button');
-            speechButton.textContent = 'Speak';
-            extractContainer.parentNode.appendChild(speechButton);
-            
-            // Set up the speech synthesis API
-            var synth = window.speechSynthesis;
-            var voices = synth.getVoices();
-            
-            speechButton.addEventListener('click', function() {
-              var extract = extractContainer.textContent;
-              var utterance = new SpeechSynthesisUtterance(extract);
-              synth.speak(utterance);
-            });
           });
         });
       }
     });
-});      
+}); 
