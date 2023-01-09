@@ -1,6 +1,9 @@
 navigator.geolocation.getCurrentPosition(function(position) {
     var lat = position.coords.latitude;
     var lon = position.coords.longitude;
+
+    var coordinatesDiv = document.getElementById("coordinates");
+    coordinatesDiv.innerHTML = "Latitude: " + lat + ", Longitude: " + lon;
   
     var url = "https://en.wikipedia.org/w/api.php"; 
   
