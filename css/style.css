@@ -1,0 +1,142 @@
+main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+    
+  /* Get Coordinate button */
+  #get-location-button {
+    width: 80%;
+    max-width: 300px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  #get-location-button:hover {
+    background-color: #3d9240;
+  }
+  #get-location-button:active {
+    background-color: #357a38;
+  }
+  
+  /* Style the location list */
+  #locations {
+    margin: 20px 0;
+    width: 80%;
+    max-width: 500px;
+  }
+  #locations ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  #locations li {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+  }
+  
+  /* Button Styling */
+  .reveal-button,
+  .speak-button {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #4caf50;
+    color: #fff;    
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    }
+    .speak-button:hover {
+      background-color: #3d9240;
+    }
+    .reveal-button:active,
+    .speak-button:active {
+      background-color: #357a38;
+    }
+    .stop-button {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 5px 10px;
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .stop-button:hover {
+      background-color: #e53935;
+    }
+    .stop-button:active {
+      background-color: #d32f2f;
+    }
+    .extract-container {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #fff;
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+  
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    body  
+      {
+        background-color: #333;
+        color: #f4f4f4;
+      }
+      #get-location-button {
+        background-color: #e5ff00;
+        color: #000;
+      }
+      #get-location-button:hover {
+        background-color: #faa622;
+      }
+      #get-location-button:active {
+        background-color: #c4d70c;
+      }
+      #locations li {
+        background-color: #444;
+        color: #f4f4f4;
+      }
+      .reveal-button,
+      .speak-button {
+        background-color: #4482ff;
+        color: #000;
+      }
+      .reveal-button:hover,
+      .speak-button:hover {
+        background-color: #aac7ff;
+      }
+      .reveal-button:active,
+      .speak-button:active {
+        background-color: #c4d70c;
+      }
+      .stop-button {
+        background-color: #f44336;
+        color: rgb(255, 255, 255);
+      }
+      .stop-button:hover {
+        background-color: #e53935;
+      }
+      .stop-button:active {
+        background-color: #d32f2f;
+      }
+      .extract-container {
+        background-color: #444;
+        color: #f4f4f4;
+      }
+    }
+    
