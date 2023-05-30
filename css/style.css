@@ -3,6 +3,11 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
+.centered {
+  text-align: center;
+  margin: 0 auto;
+}
+
 /* Light mode */
 body {
   background-color: #f4f4f4;
