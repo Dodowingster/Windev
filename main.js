@@ -5,6 +5,29 @@ function getLocation() {
     var lat = position.coords.latitude;
     var lon = position.coords.longitude;
 
+    function initMap() {
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+      });
+    
+      // Get user's location
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+    
+        // Create a marker for the user's location
+        var marker = new google.maps.Marker({
+          position: { lat: lat, lng: lon },
+          map: map,
+          title: "Your Location"
+        });
+    
+        // Center the map on the user's location
+        map.setCenter({ lat: lat, lng: lon });
+      });
+    }
+    
+    
     var url = "https://en.wikipedia.org/w/api.php";
 
     var params = {
@@ -134,8 +157,11 @@ function getLocation() {
         });
       });
     }
+
+    initMap();
   });
 }
 
 button.addEventListener("click", getLocation);
 window.addEventListener("load", getLocation);
+
