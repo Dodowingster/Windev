@@ -2,92 +2,110 @@ var button = document.getElementById("get-location-button");
 
 function getLocation() {
   navigator.geolocation.getCurrentPosition(function(position) {
-    var lat = position.coords.latitude;
-    var lon = position.coords.longitude;
+    var userLat = position.coords.latitude;
+    var userLon = position.coords.longitude;
 
     function initMap() {
       const map = new google.maps.Map(document.getElementById("map-container"), {
         zoom: 15,
         disableDefaultUI: true
       });
-    
+
       // Get user's location
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var lat = position.coords.latitude;
-        var lon = position.coords.longitude;
-    
-        // Create a marker for the user's location
-        var marker = new google.maps.Marker({
-          position: { lat: lat, lng: lon },
-          map: map,
-          title: "Your Location"
+      var userMarker = new google.maps.Marker({
+        position: { lat: userLat, lng: userLon },
+        map: map,
+        title: "Your Location"
+      });
+
+      // Center the map on the user's location
+      map.setCenter({ lat: userLat, lng: userLon });
+
+      var url = "https://en.wikipedia.org/w/api.php";
+      var params = {
+        action: "query",
+        list: "geosearch",
+        gscoord: userLat + "|" + userLon,
+        gsradius: "10000",
+        gslimit: "10",
+        format: "json"
+      };
+
+      url = url + "?origin=*";
+      Object.keys(params).forEach(function(key) {
+        url += "&" + key + "=" + params[key];
+      });
+
+      fetch(url)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(response) {
+          var locations = response.query.geosearch;
+          var locationsList = "";
+          var fetchCount = 0; // Track the number of fetch requests completed
+          for (var i = 0; i < locations.length; i++) {
+            var location = locations[i];
+            var locationUrl =
+              "https://en.wikipedia.org/w/api.php?origin=*&action=query&format=json&prop=extracts&exintro=&explaintext=&titles=" +
+              encodeURIComponent(location.title);
+
+            // Using IIFE to capture the values of location.lat and location.lon
+            (function(locationLat, locationLon) {
+              fetch(locationUrl)
+                .then(function(response) {
+                  return response.json();
+                })
+                .then(function(response) {
+                  var page =
+                    response.query.pages[Object.keys(response.query.pages)[0]];
+
+                  var distance = getDistance(userLat, userLon, locationLat, locationLon);
+
+                  locationsList += `
+                    <li>
+                      ${page.title} - Distance: ${distance.toFixed(2)} km
+                      <div class="extract-container" style="display:none">${page.extract}</div>
+                      <button class="reveal-button">Reveal Details</button>
+                    </li>
+                  `;
+
+                  fetchCount++; // Increment the fetch count
+
+                  if (fetchCount === locations.length) {
+                    // Call addRevealButtonListeners() when all fetch requests are completed
+                    var locationsDiv = document.getElementById("locations");
+                    locationsDiv.innerHTML = "<ul>" + locationsList + "</ul>";
+                    addRevealButtonListeners();
+                  }
+                })
+                .catch(function(error) {
+                  console.log(error);
+                });
+            })(location.lat, location.lon);
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
         });
-    
-        // Center the map on the user's location
-        map.setCenter({ lat: lat, lng: lon });
-      });
     }
-    
-    
-    var url = "https://en.wikipedia.org/w/api.php";
 
-    var params = {
-      action: "query",
-      list: "geosearch",
-      gscoord: lat + "|" + lon,
-      gsradius: "10000",
-      gslimit: "10",
-      format: "json"
-    };
+    function getDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Radius of the earth in kilometers
+      const dLat = deg2rad(lat2 - lat1);
+      const dLon = deg2rad(lon2 - lon1);
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const distance = R * c;
+      return distance;
+    }
 
-    url = url + "?origin=*";
-    Object.keys(params).forEach(function(key) {
-      url += "&" + key + "=" + params[key];
-    });
-
-    fetch(url)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(response) {
-        var locations = response.query.geosearch;
-        var locationsList = "";
-        var fetchCount = 0; // Track the number of fetch requests completed
-        for (var place in locations) {
-          var locationUrl =
-            "https://en.wikipedia.org/w/api.php?origin=*&action=query&format=json&prop=extracts&exintro=&explaintext=&titles=" +
-            encodeURIComponent(locations[place].title);
-          fetch(locationUrl)
-            .then(function(response) {
-              return response.json();
-            })
-            .then(function(response) {
-              var page =
-                response.query.pages[Object.keys(response.query.pages)[0]];
-              locationsList += `
-              <li>
-                ${page.title} - 
-                <div class="extract-container" style="display:none">${page.extract}</div>
-                <button class="reveal-button">Reveal Details</button>
-              </li>
-            `;
-              fetchCount++; // Increment the fetch count
-
-              if (fetchCount === locations.length) {
-                // Call addRevealButtonListeners() when all fetch requests are completed
-                var locationsDiv = document.getElementById("locations");
-                locationsDiv.innerHTML = "<ul>" + locationsList + "</ul>";
-                addRevealButtonListeners();
-              }
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
-        }
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    function deg2rad(deg) {
+      return deg * (Math.PI / 180);
+    }
 
     var currentlyDisplayedExtract = null; // Keep track of the currently displayed extract
 
@@ -165,4 +183,3 @@ function getLocation() {
 
 button.addEventListener("click", getLocation);
 window.addEventListener("load", getLocation);
-
