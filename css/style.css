@@ -8,18 +8,6 @@ body {
   margin: 0 auto;
 }
 
-/* Light mode */
-body {
-  background-color: #f4f4f4;
-  color: #000;
-}
-
-/* Dark mode */
-body.dark-mode {
-  background-color: #333;
-  color: #f4f4f4;
-}
-
 header {
   display: flex;
   justify-content: space-between;
@@ -36,7 +24,6 @@ main {
   align-items: center;
 }
 
-/* Get Coordinate button */
 #get-location-button {
   width: 80%;
   max-width: 300px;
@@ -62,7 +49,6 @@ main {
   background-color: #357a38;
 }
 
-/* Style the location list */
 #locations {
   margin: 20px 0;
   width: 80%;
@@ -83,7 +69,6 @@ main {
   font-size: 16px;
 }
 
-/* Button Styling */
 .reveal-button,
 .speak-button {
   display: inline-block;
@@ -149,24 +134,6 @@ main {
     color: #f4f4f4;
   }
 
-  #get-location-button {
-    background-color: #e5ff00;
-    color: #000;
-  }
-
-  #get-location-button:hover {
-    background-color: #faa622;
-  }
-
-  #get-location-button:active {
-    background-color: #c4d70c;
-  }
-
-  #locations li {
-    background-color: #444;
-    color: #f4f4f4;
-  }
-
   .reveal-button,
   .speak-button {
     background-color: #4482ff;
@@ -201,17 +168,6 @@ main {
     color: #f4f4f4;
   }
 
-  /* Light mode */
-  body {
-    background-color: #f4f4f4;
-    color: #000;
-  }
-
-  /* Dark mode */
-  body.dark-mode {
-    background-color: #333;
-    color: #f4f4f4;
-  }
   
   .circular-map {
     width: 400px; /* Adjust the width and height as desired */
@@ -220,4 +176,126 @@ main {
     overflow: hidden;
   }
   
+      body {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #2c3e50;
+      color: #fff;
+    }
+
+    .title-container {
+      text-align: center;
+    }
+
+    .title-container h1 {
+      margin: 0;
+      padding: 10px 0;
+      font-size: 24px;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    #get-location-button {
+      width: 100%;
+      max-width: 300px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    #get-location-button:hover {
+      background-color: #2980b9;
+    }
+
+    #get-location-button:active {
+      background-color: #1b4f72;
+    }
+
+    /* Style the location list */
+    #locations {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    #locations ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #locations li {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #fff;
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+      font-size: 16px;
+    }
+
+    #background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #333;
+        color: #f4f4f4;
+      }
+
+      header {
+        background-color: #34495e;
+      }
+
+      #dark-mode-button {
+        color: #f4f4f4;
+      }
+
+      #get-location-button {
+        background-color: #e5ff00;
+      }
+
+      #get-location-button:hover {
+        background-color: #faa622;
+      }
+
+      #get-location-button:active {
+        background-color: #c4d70c;
+      }
+
+      #locations li {
+        background-color: #444;
+        color: #f4f4f4;
+      }
+    }
+
+    #map {
+      width: 100%;
+      height: 400px;
+    }
 }
