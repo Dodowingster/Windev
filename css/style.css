@@ -298,4 +298,17 @@ main {
       width: 100%;
       height: 400px;
     }
+
+    .distance-suffix {
+      color: yellow;
+    }
+    
+    .distance-prefix{
+      color: lightblue;
+    }
+
+    .distance-value{
+      color: orange;
+    }
+
 }

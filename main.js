@@ -63,12 +63,14 @@ function getLocation() {
                   var distance = getDistance(userLat, userLon, locationLat, locationLon);
 
                   locationsList += `
-                    <li>
-                      ${page.title} - Distance: ${distance.toFixed(2)} km
-                      <div class="extract-container" style="display:none">${page.extract}</div>
-                      <button class="reveal-button">Reveal Details</button>
-                    </li>
-                  `;
+                  <li>
+                  ${page.title} > <span class="distance-prefix">Distance:</span>
+                  <span class="distance-value" id="distanceValue">${distance.toFixed(2)}</span>
+                  <span class="distance-suffix">km</span>
+                  <div class="extract-container" style="display:none">${page.extract}</div>
+                  <button class="reveal-button">Reveal Details</button>
+                  </li>
+                `;
 
                   fetchCount++; // Increment the fetch count
 
@@ -102,7 +104,7 @@ function getLocation() {
       const distance = R * c;
       return distance;
     }
-
+    
     function deg2rad(deg) {
       return deg * (Math.PI / 180);
     }
