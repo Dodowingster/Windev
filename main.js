@@ -1,5 +1,6 @@
 var button = document.getElementById("get-location-button");
-button.addEventListener("click", function() {
+
+function getLocation() {
   navigator.geolocation.getCurrentPosition(function(position) {
     var lat = position.coords.latitude;
     var lon = position.coords.longitude;
@@ -134,4 +135,7 @@ button.addEventListener("click", function() {
       });
     }
   });
-});
+}
+
+button.addEventListener("click", getLocation);
+window.addEventListener("load", getLocation);
