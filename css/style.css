@@ -211,5 +211,13 @@ main {
   body.dark-mode {
     background-color: #333;
     color: #f4f4f4;
-  }  
+  }
+  
+  .circular-map {
+    width: 400px; /* Adjust the width and height as desired */
+    height: 400px;
+    border-radius: 100%;
+    overflow: hidden;
+  }
+  
 }

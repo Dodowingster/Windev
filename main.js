@@ -6,8 +6,9 @@ function getLocation() {
     var lon = position.coords.longitude;
 
     function initMap() {
-      const map = new google.maps.Map(document.getElementById("map"), {
+      const map = new google.maps.Map(document.getElementById("map-container"), {
         zoom: 15,
+        disableDefaultUI: true
       });
     
       // Get user's location
