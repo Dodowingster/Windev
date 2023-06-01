@@ -75,8 +75,8 @@ main {
   display: inline-block;
   margin-left: 10px;
   padding: 5px 10px;
-  background-color: #4caf50;
-  color: #fff;
+  background-color: #4482ff;
+  color: #000;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -133,12 +133,6 @@ main {
   body {
     background-color: #333;
     color: #f4f4f4;
-  }
-
-  .reveal-button,
-  .speak-button {
-    background-color: #4482ff;
-    color: #000;
   }
 
   .reveal-button:hover,
@@ -342,5 +336,53 @@ main {
       margin-bottom: 10px;
       font-size: 14px;
     }
+    
+    a:visited {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 5px 10px;
+      background-color: #8d939e; /* Grey */
+      color: #ffffff; /* White */
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease;
+      width: 20%;
+      text-decoration: none; /* Remove underline */
+    }
+    
+    a:visited:hover {
+      background-color: #585c63; /* Darker Grey */
+      color: #ffffff; /* White */
+    }
+    
+    a {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 5px 10px;
+      background-color: #8d939e; /* Grey */
+      color: #ffffff; /* White */
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease;
+      width: 20%;
+      text-decoration: none; /* Remove underline */
+    }
+    
+    a:hover {
+      background-color: #585c63; /* Darker Grey */
+      color: #ffffff; /* White */
+    }
+    
+    
     
 }
