@@ -28,7 +28,10 @@ function getLocation() {
         gscoord: userLat + "|" + userLon,
         gsradius: "10000",
         gslimit: "10",
-        format: "json"
+        format: "json",
+        prop: "coordinates|pageimages",
+        piprop: "thumbnail",
+        pithumbsize: 200
       };
 
       url = url + "?origin=*";
@@ -44,6 +47,9 @@ function getLocation() {
           var locations = response.query.geosearch;
           var locationsList = "";
           var fetchCount = 0; // Track the number of fetch requests completed
+          var delay = 200; // Delay in milliseconds before each location slides in
+          var delayIncrement = 50; // Incremental delay between each location
+
           for (var i = 0; i < locations.length; i++) {
             var location = locations[i];
             var locationUrl =
@@ -51,7 +57,7 @@ function getLocation() {
               encodeURIComponent(location.title);
 
             // Using IIFE to capture the values of location.lat and location.lon
-            (function(locationLat, locationLon) {
+            (function(locationLat, locationLon, index) {
               fetch(locationUrl)
                 .then(function(response) {
                   return response.json();
@@ -62,31 +68,33 @@ function getLocation() {
 
                   var distance = getDistance(userLat, userLon, locationLat, locationLon);
 
-                  locationsList += `
-                  <li>
-                  ${page.title} > <span class="distance-prefix">Distance:</span>
-                  <span class="distance-value" id="distanceValue">${distance.toFixed(2)}</span>
-                  <span class="distance-suffix">km</span>
-                  <div class="extract-container" style="display:none">${page.extract}</div>
-                  <button class="reveal-button">Reveal Details</button>
-                  </li>
-                `;
+                  var listItem = document.createElement("li");
+                  listItem.className = "slide-in";
+                  listItem.innerHTML = `
+                    ${page.title} > <span class="distance-prefix">Distance:</span>
+                    <span class="distance-value" id="distanceValue">${distance.toFixed(2)}</span>
+                    <span class="distance-suffix">km</span>
+                    <img src="${page.thumbnail ? page.thumbnail.source : ''}" alt="${page.title} Thumbnail" />
+                    <div class="extract-container slide-down" style="display:none">${page.extract}</div>
+                    <button class="reveal-button">Reveal Details</button>
+                  `;
+
+                  setTimeout(function() {
+                    var locationsDiv = document.getElementById("locations");
+                    locationsDiv.appendChild(listItem);
+
+                    if (index === locations.length - 1) {
+                      // Call addRevealButtonListeners() when all locations are appended
+                      addRevealButtonListeners();
+                    }
+                  }, delay + index * delayIncrement);
 
                   fetchCount++; // Increment the fetch count
-
-                  if (fetchCount === locations.length) {
-                    // Call addRevealButtonListeners() when all fetch requests are completed
-                    var locationsDiv = document.getElementById("locations");
-                    locationsDiv.innerHTML = "<ul>" + locationsList + "</ul>";
-                    addRevealButtonListeners();
-                  }
-                })
-                .catch(function(error) {
-                  console.log(error);
                 });
-            })(location.lat, location.lon);
+            })(location.lat, location.lon, i); // Pass location.lat, location.lon, and index to the IIFE
           }
         })
+
         .catch(function(error) {
           console.log(error);
         });
@@ -104,7 +112,7 @@ function getLocation() {
       const distance = R * c;
       return distance;
     }
-    
+
     function deg2rad(deg) {
       return deg * (Math.PI / 180);
     }
@@ -116,6 +124,7 @@ function getLocation() {
       revealButtons.forEach(function(button) {
         button.addEventListener("click", function() {
           var extractContainer = button.previousElementSibling;
+          extractContainer.classList.toggle("show");
           var speechButton = button.speechButton;
 
           if (currentlyDisplayedExtract === extractContainer) {

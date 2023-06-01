@@ -1,7 +1,8 @@
 /* Global Styles */
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Robota';
 }
+
 
 .centered {
   text-align: center;
@@ -169,17 +170,14 @@ main {
   }
 
   
-  .circular-map {
-    width: 200px; /* Adjust the width and height as desired */
-    height: 200px;
-    border-radius: 100%;
-    overflow: hidden;
+  .circular-map  {
+    width: 300px; /* Adjust the width and height as desired */
+    height: 250px;
+    position: relative;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
   }
   
-      body {
-      font-family: 'Montserrat', sans-serif;
-    }
-
+   
     header {
       display: flex;
       justify-content: space-between;
@@ -304,11 +302,52 @@ main {
     }
     
     .distance-prefix{
-      color: lightblue;
+      color: aqua;
     }
 
     .distance-value{
-      color: orange;
+      color: yellow;
+    }
+
+    @keyframes slideIn {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+    
+    .slide-in {
+      animation: slideIn 0.5s ease-in-out;
+    }
+
+    .slide-down {
+      animation: slide-down 0.3s ease-out;
+    }
+    
+    @keyframes slide-down {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+        /* Adjust the styles for the image container */
+    #image-container {
+      margin-top: 20px; /* Adjust as needed */
+    }
+
+    /* Adjust the styles for each thumbnail image */
+    #image-container img {
+      display: block; /* Ensures the image is displayed as a block element */
+      max-width: 100%; /* Ensures the image doesn't exceed the container's width */
+      height: auto; /* Maintains the image's aspect ratio */
+      margin-bottom: 10px; /* Adjust as needed */
     }
 
 }
