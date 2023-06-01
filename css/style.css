@@ -3,7 +3,6 @@ body {
   font-family: 'Robota';
 }
 
-
 .centered {
   text-align: center;
   margin: 0 auto;
@@ -37,7 +36,6 @@ main {
   font-size: 18px;
   font-weight: 700;
   text-transform: uppercase;
-
   letter-spacing: 1px;
   transition: background-color 0.3s ease;
 }
@@ -71,7 +69,9 @@ main {
 }
 
 .reveal-button,
-.speak-button {
+.speak-button,
+.set-destination-button,
+a {
   display: inline-block;
   margin-left: 10px;
   padding: 5px 10px;
@@ -85,6 +85,7 @@ main {
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: background-color 0.3s ease;
+  max-width: fit-content;
 }
 
 .speak-button:hover {
@@ -163,226 +164,201 @@ main {
     color: #f4f4f4;
   }
 
-  
-  .circular-map  {
+  .circular-map {
     width: 300px; /* Adjust the width and height as desired */
     height: 250px;
     position: relative;
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
   }
-  
-   
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #2c3e50;
+    color: #fff;
+  }
+
+  .title-container {
+    text-align: center;
+  }
+
+  .title-container h1 {
+    margin: 0;
+    padding: 10px 0;
+    font-size: 24px;
+  }
+
+  main {
+    padding: 20px;
+  }
+
+  #get-location-button {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #000000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+  }
+
+  #get-location-button:hover {
+    background-color: #2980b9;
+  }
+
+  #get-location-button:active {
+    background-color: #1b4f72;
+  }
+
+  /* Style the location list */
+  #locations {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  #locations ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #locations li {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+  }
+
+  #background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    opacity: 0.3;
+  }
+
+  /* Dark mode */
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #f4f4f4;
+    }
+
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      background-color: #2c3e50;
-      color: #fff;
+      background-color: #34495e;
     }
 
-    .title-container {
-      text-align: center;
-    }
-
-    .title-container h1 {
-      margin: 0;
-      padding: 10px 0;
-      font-size: 24px;
-    }
-
-    main {
-      padding: 20px;
+    #dark-mode-button {
+      color: #f4f4f4;
     }
 
     #get-location-button {
-      width: 100%;
-      max-width: 300px;
-      padding: 10px 20px;
-      background-color: #3498db;
-      color: #000000;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: background-color 0.3s ease;
-      margin-bottom: 20px;
+      background-color: #e5ff00;
     }
 
     #get-location-button:hover {
-      background-color: #2980b9;
+      background-color: #faa622;
     }
 
     #get-location-button:active {
-      background-color: #1b4f72;
-    }
-
-    /* Style the location list */
-    #locations {
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    #locations ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
+      background-color: #c4d70c;
     }
 
     #locations li {
-      margin: 10px 0;
-      padding: 10px;
-      background-color: #fff;
-      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
-      font-size: 16px;
+      background-color: #444;
+      color: #f4f4f4;
     }
+  }
 
-    #background-image {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      z-index: -1;
-      opacity: 0.3;
-    }
+  #map {
+    width: 100%;
+    height: 400px;
+  }
 
-    /* Dark mode */
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #333;
-        color: #f4f4f4;
-      }
+  .distance-suffix {
+    color: yellow;
+  }
 
-      header {
-        background-color: #34495e;
-      }
+  .distance-prefix {
+    color: aqua;
+  }
 
-      #dark-mode-button {
-        color: #f4f4f4;
-      }
+  .distance-value {
+    color: yellow;
+  }
 
-      #get-location-button {
-        background-color: #e5ff00;
-      }
+  @keyframes slideIn {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
 
-      #get-location-button:hover {
-        background-color: #faa622;
-      }
+  .slide-in {
+    animation: slideIn 0.5s ease-in-out;
+  }
 
-      #get-location-button:active {
-        background-color: #c4d70c;
-      }
+  .slide-down {
+    animation: slide-down 0.3s ease-out;
+  }
 
-      #locations li {
-        background-color: #444;
-        color: #f4f4f4;
-      }
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
     }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-    #map {
-      width: 100%;
-      height: 400px;
-    }
+  .show-link {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
 
-    .distance-suffix {
-      color: yellow;
-    }
-    
-    .distance-prefix{
-      color: aqua;
-    }
+  .formal-button {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
 
-    .distance-value{
-      color: yellow;
-    }
+  .formal-button:hover {
+    background-color: #f4f4f4;
+  }
 
-    @keyframes slideIn {
-      0% {
-        transform: translateX(-100%);
-      }
-      100% {
-        transform: translateX(0);
-      }
-    }
-    
-    .slide-in {
-      animation: slideIn 0.5s ease-in-out;
-    }
-
-    .slide-down {
-      animation: slide-down 0.3s ease-out;
-    }
-    
-    @keyframes slide-down {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .show-link {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-    
-    a:visited {
-      display: inline-block;
-      margin-left: 10px;
-      padding: 5px 10px;
-      background-color: #8d939e; /* Grey */
-      color: #ffffff; /* White */
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: background-color 0.3s ease;
-      width: 35%;
-      text-decoration: none; /* Remove underline */
-    }
-    
-    a:visited:hover {
-      background-color: #585c63; /* Darker Grey */
-      color: #ffffff; /* White */
-    }
-    
-    a {
-      display: inline-block;
-      margin-left: 10px;
-      padding: 5px 10px;
-      background-color: #8d939e; /* Grey */
-      color: #ffffff; /* White */
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: background-color 0.3s ease;
-      width: 35%;
-      text-decoration: none; /* Remove underline */
-    }
-    
-    a:hover {
-      background-color: #585c63; /* Darker Grey */
-      color: #ffffff; /* White */
-    }
-    
-    
-    
+  .formal-button:active {
+    background-color: #d3d3d3;
+  }
 }
+

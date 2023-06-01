@@ -1,15 +1,24 @@
 var button = document.getElementById("get-location-button");
+var directionsService = new google.maps.DirectionsService();
+var directionsRenderer = new google.maps.DirectionsRenderer({
+  polylineOptions: {
+    strokeColor: "blue",
+    strokeWeight: 8
+  }
+});
 
 function getLocation() {
   navigator.geolocation.getCurrentPosition(function(position) {
     var userLat = position.coords.latitude;
     var userLon = position.coords.longitude;
-
+    
     function initMap() {
       const map = new google.maps.Map(document.getElementById("map-container"), {
         zoom: 15,
         disableDefaultUI: true
       });
+
+      directionsRenderer.setMap(map);
 
       // Get user's location
       var userMarker = new google.maps.Marker({
@@ -74,9 +83,18 @@ function getLocation() {
                   <span class="distance-value" id="distanceValue">${distance.toFixed(2)}</span>
                   <span class="distance-suffix">km</span>
                   <div class="extract-container slide-down" style="display:none">${page.extract}</div>
-                  <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(locations[index].title)}" target="_blank">Read More</a>
+                  <br>
                   <button class="reveal-button">Reveal Details</button>
-                `;
+                  <br>
+                  <br>
+                  <button class="set-destination-button">Set Destination</button>
+                  <br>
+                  <br>
+                  <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(locations[index].title)}" target="_blank">Read More</a>
+                  `;
+
+                  listItem.setAttribute("data-lat", locationLat);
+                  listItem.setAttribute("data-lon", locationLon);
 
                   setTimeout(function() {
                     locationsDiv.appendChild(listItem);
@@ -84,6 +102,7 @@ function getLocation() {
                     if (index === locations.length - 1) {
                       // Call addRevealButtonListeners() when all locations are appended
                       addRevealButtonListeners();
+                      addSetDestinationButtonListeners();
                     }
                   }, delay + index * delayIncrement);
 
@@ -92,7 +111,6 @@ function getLocation() {
             })(location.lat, location.lon, i); // Pass location.lat, location.lon, and index to the IIFE
           }
         })
-
         .catch(function(error) {
           console.log(error);
         });
@@ -189,8 +207,40 @@ function getLocation() {
       });
     }
 
-    initMap();
+    function addSetDestinationButtonListeners() {
+      var setDestinationButtons = document.querySelectorAll(".set-destination-button");
+      setDestinationButtons.forEach(function(button) {
+        button.addEventListener("click", function() {
+          var listItem = button.parentNode; // Get the parent <li> element
+          var lat = listItem.getAttribute("data-lat");
+          var lon = listItem.getAttribute("data-lon");
 
+          var destinationUrl = "https://www.google.com/maps/dir/?api=1&destination=" + lat + "," + lon;
+          //window.open(destinationUrl);
+
+          calculateAndDisplayRoute(userLat, userLon, parseFloat(lat), parseFloat(lon));
+        });
+      });
+    }
+
+    function calculateAndDisplayRoute(startLat, startLon, endLat, endLon) {
+      directionsService.route(
+        {
+          origin: { lat: startLat, lng: startLon },
+          destination: { lat: endLat, lng: endLon },
+          travelMode: "DRIVING"
+        },
+        function(response, status) {
+          if (status === "OK") {
+            directionsRenderer.setDirections(response);
+          } else {
+            window.alert("Directions request failed due to " + status);
+          }
+        }
+      );
+    }
+
+    initMap();
   });
 }
 
