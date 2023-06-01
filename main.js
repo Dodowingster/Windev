@@ -29,9 +29,6 @@ function getLocation() {
         gsradius: "10000",
         gslimit: "10",
         format: "json",
-        prop: "coordinates|pageimages",
-        piprop: "thumbnail",
-        pithumbsize: 200
       };
 
       url = url + "?origin=*";
@@ -74,7 +71,6 @@ function getLocation() {
                     ${page.title} > <span class="distance-prefix">Distance:</span>
                     <span class="distance-value" id="distanceValue">${distance.toFixed(2)}</span>
                     <span class="distance-suffix">km</span>
-                    <img src="${page.thumbnail ? page.thumbnail.source : ''}" alt="${page.title} Thumbnail" />
                     <div class="extract-container slide-down" style="display:none">${page.extract}</div>
                     <button class="reveal-button">Reveal Details</button>
                   `;
