@@ -336,4 +336,11 @@ main {
         transform: translateY(0);
       }
     }
+
+    .show-link {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    
 }

@@ -68,12 +68,14 @@ function getLocation() {
                   var listItem = document.createElement("li");
                   listItem.className = "slide-in";
                   listItem.innerHTML = `
-                    ${page.title} ~ <span class="distance-prefix">Distance:</span>
-                    <span class="distance-value" id="distanceValue">${distance.toFixed(2)}</span>
-                    <span class="distance-suffix">km</span>
-                    <div class="extract-container slide-down" style="display:none">${page.extract}</div>
-                    <button class="reveal-button">Reveal Details</button>
-                  `;
+                  ${page.title} ~ <span class="distance-prefix">Distance:</span>
+                  <span class="distance-value" id="distanceValue">${distance.toFixed(2)}</span>
+                  <span class="distance-suffix">km</span>
+                  <div class="extract-container slide-down" style="display:none">${page.extract}</div>
+                  <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(location.title)}" target="_blank">Read More</a>
+                  <button class="reveal-button">Reveal Details</button>
+                `;
+                
 
                   setTimeout(function() {
                     var locationsDiv = document.getElementById("locations");
@@ -119,20 +121,23 @@ function getLocation() {
       var revealButtons = document.querySelectorAll(".reveal-button");
       revealButtons.forEach(function(button) {
         button.addEventListener("click", function() {
-          var extractContainer = button.previousElementSibling;
+          var listItem = button.parentNode; // Get the parent <li> element
+          var extractContainer = listItem.querySelector(".extract-container");
+          var link = listItem.querySelector("a");
+    
           extractContainer.classList.toggle("show");
-          var speechButton = button.speechButton;
-
+          link.classList.toggle("show-link");
+    
           if (currentlyDisplayedExtract === extractContainer) {
             // Hide the currently displayed extract
             extractContainer.style.display = "none";
-
+    
+            // Remove the speech button if it exists
+            var speechButton = button.parentNode.querySelector(".speech-buttons");
             if (speechButton) {
-              // Remove the speech button if it exists
               speechButton.parentNode.removeChild(speechButton);
-              delete button.speechButton;
             }
-
+    
             // Update the button text
             button.textContent = "Reveal Details";
             currentlyDisplayedExtract = null;
@@ -140,34 +145,34 @@ function getLocation() {
             if (currentlyDisplayedExtract) {
               // Hide the previously displayed extract
               currentlyDisplayedExtract.style.display = "none";
-
+    
               // Restore the previous button text
-              var previousButton = currentlyDisplayedExtract.nextElementSibling;
+              var previousButton = currentlyDisplayedExtract.parentNode.querySelector(".reveal-button");
               previousButton.textContent = "Reveal Details";
-
+    
               // Remove the speech button from the previous location if it exists
-              var previousSpeechButton = previousButton.speechButton;
+              var previousSpeechButton = previousButton.parentNode.querySelector(".speech-buttons");
               if (previousSpeechButton) {
                 previousSpeechButton.parentNode.removeChild(previousSpeechButton);
-                delete previousButton.speechButton;
               }
             }
-
+    
             // Show the clicked extract
             extractContainer.style.display = "block";
             button.textContent = "Hide Details";
-
+    
             // Add speech buttons if they don't exist
-            if (!speechButton) {
-              speechButton = document.createElement("div");
-              speechButton.innerHTML =
+            var speechButtons = listItem.querySelector(".speech-buttons");
+            if (!speechButtons) {
+              speechButtons = document.createElement("div");
+              speechButtons.className = "speech-buttons";
+              speechButtons.innerHTML =
                 '<button class="speak-button">Speak</button><button class="stop-button">Stop</button>';
-              button.parentNode.appendChild(speechButton);
-              button.speechButton = speechButton;
-
+              button.parentNode.appendChild(speechButtons);
+    
               // Set up the speech synthesis API
               var synth = window.speechSynthesis;
-              speechButton.addEventListener("click", function(event) {
+              speechButtons.addEventListener("click", function(event) {
                 var extract = extractContainer.textContent;
                 if (event.target.classList.contains("speak-button")) {
                   var utterance = new SpeechSynthesisUtterance(extract);
@@ -177,14 +182,15 @@ function getLocation() {
                 }
               });
             }
-
+    
             currentlyDisplayedExtract = extractContainer; // Update the currently displayed extract
           }
         });
       });
     }
-
+    
     initMap();
+    
   });
 }
 
