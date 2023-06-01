@@ -217,8 +217,12 @@ function getLocation() {
 
           var destinationUrl = "https://www.google.com/maps/dir/?api=1&destination=" + lat + "," + lon;
           //window.open(destinationUrl);
-
+          
           calculateAndDisplayRoute(userLat, userLon, parseFloat(lat), parseFloat(lon));
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          })
         });
       });
     }
