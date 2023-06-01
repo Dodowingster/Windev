@@ -3,7 +3,8 @@ var directionsService = new google.maps.DirectionsService();
 var directionsRenderer = new google.maps.DirectionsRenderer({
   polylineOptions: {
     strokeColor: "blue",
-    strokeWeight: 8
+    strokeWeight: 8,
+    strokeOpacity: 0.8
   }
 });
 
