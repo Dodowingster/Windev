@@ -72,7 +72,7 @@ function getLocation() {
                   <span class="distance-value" id="distanceValue">${distance.toFixed(2)}</span>
                   <span class="distance-suffix">km</span>
                   <div class="extract-container slide-down" style="display:none">${page.extract}</div>
-                  <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(locations[index].title)}" target="_blank">Explore</a>
+                  <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(locations[index].title)}" target="_blank">Read More</a>
                   <button class="reveal-button">Reveal Details</button>
                 `;
                 
@@ -195,4 +195,3 @@ function getLocation() {
 }
 
 button.addEventListener("click", getLocation);
-window.addEventListener("load", getLocation);
