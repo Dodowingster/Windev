@@ -42,7 +42,9 @@ function getLocation() {
         })
         .then(function(response) {
           var locations = response.query.geosearch;
-          var locationsList = "";
+          var locationsDiv = document.getElementById("locations");
+          locationsDiv.innerHTML = ""; // Clear previous locations
+
           var fetchCount = 0; // Track the number of fetch requests completed
           var delay = 200; // Delay in milliseconds before each location slides in
           var delayIncrement = 50; // Incremental delay between each location
@@ -75,10 +77,8 @@ function getLocation() {
                   <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(locations[index].title)}" target="_blank">Read More</a>
                   <button class="reveal-button">Reveal Details</button>
                 `;
-                
 
                   setTimeout(function() {
-                    var locationsDiv = document.getElementById("locations");
                     locationsDiv.appendChild(listItem);
 
                     if (index === locations.length - 1) {
@@ -124,20 +124,20 @@ function getLocation() {
           var listItem = button.parentNode; // Get the parent <li> element
           var extractContainer = listItem.querySelector(".extract-container");
           var link = listItem.querySelector("a");
-    
+
           extractContainer.classList.toggle("show");
           link.classList.toggle("show-link");
-    
+
           if (currentlyDisplayedExtract === extractContainer) {
             // Hide the currently displayed extract
             extractContainer.style.display = "none";
-    
+
             // Remove the speech button if it exists
             var speechButton = button.parentNode.querySelector(".speech-buttons");
             if (speechButton) {
               speechButton.parentNode.removeChild(speechButton);
             }
-    
+
             // Update the button text
             button.textContent = "Reveal Details";
             currentlyDisplayedExtract = null;
@@ -145,22 +145,22 @@ function getLocation() {
             if (currentlyDisplayedExtract) {
               // Hide the previously displayed extract
               currentlyDisplayedExtract.style.display = "none";
-    
+
               // Restore the previous button text
               var previousButton = currentlyDisplayedExtract.parentNode.querySelector(".reveal-button");
               previousButton.textContent = "Reveal Details";
-    
+
               // Remove the speech button from the previous location if it exists
               var previousSpeechButton = previousButton.parentNode.querySelector(".speech-buttons");
               if (previousSpeechButton) {
                 previousSpeechButton.parentNode.removeChild(previousSpeechButton);
               }
             }
-    
+
             // Show the clicked extract
             extractContainer.style.display = "block";
             button.textContent = "Hide Details";
-    
+
             // Add speech buttons if they don't exist
             var speechButtons = listItem.querySelector(".speech-buttons");
             if (!speechButtons) {
@@ -169,7 +169,7 @@ function getLocation() {
               speechButtons.innerHTML =
                 '<button class="speak-button">Speak</button><button class="stop-button">Stop</button>';
               button.parentNode.appendChild(speechButtons);
-    
+
               // Set up the speech synthesis API
               var synth = window.speechSynthesis;
               speechButtons.addEventListener("click", function(event) {
@@ -182,15 +182,15 @@ function getLocation() {
                 }
               });
             }
-    
+
             currentlyDisplayedExtract = extractContainer; // Update the currently displayed extract
           }
         });
       });
     }
-    
+
     initMap();
-    
+
   });
 }
 
