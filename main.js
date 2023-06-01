@@ -68,7 +68,7 @@ function getLocation() {
                   var listItem = document.createElement("li");
                   listItem.className = "slide-in";
                   listItem.innerHTML = `
-                    ${page.title} > <span class="distance-prefix">Distance:</span>
+                    ${page.title} ~ <span class="distance-prefix">Distance:</span>
                     <span class="distance-value" id="distanceValue">${distance.toFixed(2)}</span>
                     <span class="distance-suffix">km</span>
                     <div class="extract-container slide-down" style="display:none">${page.extract}</div>
