@@ -82,7 +82,6 @@ function getLocation() {
                   listItem.innerHTML = `
                   <span class="page-title">${page.title}</span>
                   <br>
-                  
                   <span class="distance-prefix">Distance:</span>
                   <span class="distance-value" id="distanceValue">${distance.toFixed(2)}</span>
                   <span class="distance-suffix">Km</span>
