@@ -437,4 +437,5 @@ a {
   max-width: 500px;
   max-height: 100px;
   width: 100%;
+  animation: fade-in 1s ease-in;
 }
