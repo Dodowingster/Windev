@@ -1,6 +1,6 @@
 /* Global Styles */
 body {
-  font-family: 'Robota';
+  font-family: 'Roboto', sans-serif;
 }
 
 .centered {
@@ -8,11 +8,29 @@ body {
   margin: 0 auto;
 }
 
+h1{
+  color: yellow;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-style: oblique;
+}
+
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+  animation: slide-down 0.3s ease-out;
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 main {
@@ -38,6 +56,7 @@ main {
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: background-color 0.3s ease;
+  animation: fade-in 1s ease-in;
 }
 
 #get-location-button:hover {
@@ -52,6 +71,7 @@ main {
   margin: 20px 0;
   width: 80%;
   max-width: 500px;
+  animation: slideIn 0.5s ease-in-out;
 }
 
 #locations ul {
@@ -66,12 +86,30 @@ main {
   background-color: #fff;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
   font-size: 16px;
+  animation: slideIn 0.5s ease-in-out;
 }
 
 .reveal-button,
-.speak-button,
 .set-destination-button,
 a {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #e5ff00;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease;
+  max-width: fit-content;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+.speak-button {
   display: inline-block;
   margin-left: 10px;
   padding: 5px 10px;
@@ -86,6 +124,7 @@ a {
   letter-spacing: 1px;
   transition: background-color 0.3s ease;
   max-width: fit-content;
+  animation: fade-in 1s ease-in;
 }
 
 .speak-button:hover {
@@ -111,6 +150,7 @@ a {
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: background-color 0.3s ease;
+  animation: slideIn 0.5s ease-in-out;
 }
 
 .stop-button:hover {
@@ -127,6 +167,7 @@ a {
   background-color: #fff;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
   font-size: 14px;
+  animation: slideIn 0.5s ease-in-out;
 }
 
 /* Dark mode */
@@ -176,7 +217,7 @@ a {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background-color: #2c3e50;
+    background-color: #000000;
     color: #fff;
   }
 
@@ -295,7 +336,7 @@ a {
   }
 
   .distance-prefix {
-    color: aqua;
+    color: lightskyblue;
   }
 
   .distance-value {
@@ -336,29 +377,13 @@ a {
     font-size: 14px;
   }
 
-  .formal-button {
-    display: inline-block;
-    margin-left: 10px;
-    padding: 5px 10px;
-    background-color: #ffffff;
-    color: #000000;
-    border: 1px solid #000000;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
-
-  .formal-button:hover {
-    background-color: #f4f4f4;
-  }
-
-  .formal-button:active {
-    background-color: #d3d3d3;
-  }
+  
 }
-
