@@ -113,7 +113,7 @@ a {
   display: inline-block;
   margin-left: 10px;
   padding: 5px 10px;
-  background-color: #4482ff;
+  background-color: lightgreen;
   color: #000;
   border: none;
   border-radius: 4px;
@@ -125,10 +125,6 @@ a {
   transition: background-color 0.3s ease;
   max-width: fit-content;
   animation: fade-in 1s ease-in;
-}
-
-.speak-button:hover {
-  background-color: #3d9240;
 }
 
 .reveal-button:active,
@@ -179,7 +175,7 @@ a {
 
   .reveal-button:hover,
   .speak-button:hover {
-    background-color: #aac7ff;
+    background-color: green;
   }
 
   .reveal-button:active,
@@ -193,7 +189,7 @@ a {
   }
 
   .stop-button:hover {
-    background-color: #e53935;
+    background-color: #a52927;
   }
 
   .stop-button:active {
@@ -333,6 +329,7 @@ a {
 
   .distance-suffix {
     color: yellow;
+    font-family: 'Times New Roman', Times, serif;
   }
 
   .distance-prefix {
@@ -341,6 +338,9 @@ a {
 
   .distance-value {
     color: yellow;
+    animation: pulse 2s infinite;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
   }
 
   @keyframes slideIn {
@@ -386,4 +386,46 @@ a {
     }
   }
   
+  .reveal-button:hover,
+  .set-destination-button:hover,
+  a:hover {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #aebb37;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease;
+  max-width: fit-content;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.page-title {
+  
+  color: rgb(255, 255, 255);
+  font-weight: bolder;
+  font-style: italic;
+}
+
 }
