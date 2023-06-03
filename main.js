@@ -236,7 +236,7 @@ function getLocation() {
         {
           origin: { lat: startLat, lng: startLon },
           destination: { lat: endLat, lng: endLon },
-          travelMode: "DRIVING"
+          travelMode: "WALKING"
         },
         function(response, status) {
           if (status === "OK") {
