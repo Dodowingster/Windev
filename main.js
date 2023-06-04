@@ -220,18 +220,14 @@ function getLocation() {
                   <span class="distance-value" id="distanceValue">${distance.toFixed(2)}</span>
                   <span class="distance-suffix">Km</span>
                   <div class="extract-container slide-down" style="display:none">${page.extract}</div>
-                  <br>
-                  <br>
+                  <br><br>
                   <button class="reveal-button">Reveal Details</button>
-                  <br>
-                  <br>
+                  <br><br>
                   <button class="set-destination-button">Set Destination</button>
-                  <br>
-                  <br>
-                  <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(locations[index].title)}" target="_blank">Go To Wiki</a>
-                  <br>
-                  <br>
+                  <br><br>
                   <button class="save-location-button">Save Location</button>
+                  <br><br>
+                  <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(locations[index].title)}" target="_blank">Go To Wiki</a>
                   `;
 
                   listItem.setAttribute("data-lat", locationLat);
