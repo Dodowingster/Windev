@@ -109,7 +109,7 @@ function displaySavedLocations() {
         });
       
         var readMoreButton = document.createElement("button");
-        readMoreButton.textContent = "Read More";
+        readMoreButton.textContent = "Visit Wiki";
         readMoreButton.classList.add("read-more-button");
         readMoreButton.addEventListener("click", function() {
           openWikipediaPage(location.title);
@@ -142,13 +142,13 @@ function displaySavedLocations() {
           clearDescription(descriptionInput);
         });
 
-        listItem.appendChild(deleteButton);
-        listItem.appendChild(readMoreButton);
         listItem.appendChild(document.createElement("br"));
         listItem.appendChild(descriptionInput);
         listItem.appendChild(document.createElement("br"));
         listItem.appendChild(saveDescriptionButton);
         listItem.appendChild(clearDescriptionButton);
+        listItem.appendChild(readMoreButton);
+        listItem.appendChild(deleteButton);
       
         savedLocationsList.appendChild(listItem);
       });
