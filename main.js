@@ -93,7 +93,15 @@ function displaySavedLocations() {
           removeLocation(location);
         });
 
+        var readMoreButton = document.createElement("button");
+        readMoreButton.textContent = "Read More";
+        readMoreButton.classList.add("read-more-button");
+        readMoreButton.addEventListener("click", function() {
+          openWikipediaPage(location.title);
+        });
+
         listItem.appendChild(deleteButton);
+        listItem.appendChild(readMoreButton);
 
         savedLocationsList.appendChild(listItem);
       });
@@ -109,6 +117,12 @@ function displaySavedLocations() {
     savedLocationsList.appendChild(noSavedLocations);
   }
 }
+
+function openWikipediaPage(title) {
+  var url = "https://en.wikipedia.org/wiki/" + encodeURIComponent(title);
+  window.open(url, "_blank", "width=600,height=400");
+}
+
 
 function isLocationSaved(title) {
   if (isLocalStorageSupported()) {
@@ -214,7 +228,7 @@ function getLocation() {
                   <button class="set-destination-button">Set Destination</button>
                   <br>
                   <br>
-                  <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(locations[index].title)}" target="_blank">Read More</a>
+                  <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(locations[index].title)}" target="_blank">Go To Wiki</a>
                   <br>
                   <br>
                   <button class="save-location-button">Save Location</button>
@@ -388,7 +402,7 @@ function calculateAndDisplayRoute(userLat, userLon, destinationLat, destinationL
     {
       origin: start,
       destination: end,
-      travelMode: google.maps.TravelMode.DRIVING
+      travelMode: google.maps.TravelMode.WALKING
     },
     function(response, status) {
       if (status === google.maps.DirectionsStatus.OK) {
