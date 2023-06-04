@@ -8,11 +8,131 @@ var directionsRenderer = new google.maps.DirectionsRenderer({
   }
 });
 
+// Check if local storage is supported
+function isLocalStorageSupported() {
+  try {
+    var testKey = "test";
+    localStorage.setItem(testKey, testKey);
+    localStorage.removeItem(testKey);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// Save location to local storage
+function saveLocation(title, lat, lon) {
+  if (isLocalStorageSupported()) {
+    var location = {
+      title: title,
+      lat: lat,
+      lon: lon
+    };
+
+    var savedLocations = localStorage.getItem("savedLocations");
+    if (savedLocations) {
+      var parsedLocations = JSON.parse(savedLocations);
+
+      // Check if the location already exists
+      if (parsedLocations.some(function(savedLocation) {
+        return savedLocation.title === location.title && savedLocation.lat === location.lat && savedLocation.lon === location.lon;
+      })) {
+        alert("Location has already been saved!");
+        return;
+      }
+
+      parsedLocations.push(location);
+      localStorage.setItem("savedLocations", JSON.stringify(parsedLocations));
+    } else {
+      localStorage.setItem("savedLocations", JSON.stringify([location]));
+    }
+
+    // Refresh the saved locations list
+    displaySavedLocations();
+  } else {
+    console.log("Local storage is not supported.");
+  }
+}
+
+function removeLocation(location) {
+  if (isLocalStorageSupported()) {
+    var savedLocations = localStorage.getItem("savedLocations");
+    if (savedLocations) {
+      var parsedLocations = JSON.parse(savedLocations);
+      var updatedLocations = parsedLocations.filter(function(savedLocation) {
+        return savedLocation.title !== location.title;
+      });
+      localStorage.setItem("savedLocations", JSON.stringify(updatedLocations));
+
+      // Refresh the saved locations list
+      displaySavedLocations();
+    }
+  } else {
+    console.log("Local storage is not supported.");
+  }
+}
+
+
+function displaySavedLocations() {
+  if (isLocalStorageSupported()) {
+    var savedLocations = localStorage.getItem("savedLocations");
+    var savedLocationsList = document.getElementById("saved-locations-list");
+
+    if (savedLocations && savedLocationsList) {
+      var parsedLocations = JSON.parse(savedLocations);
+      savedLocationsList.innerHTML = ""; // Clear previous saved locations
+
+      parsedLocations.forEach(function(location) {
+        var listItem = document.createElement("li");
+        listItem.textContent = location.title;
+
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add("delete-button");
+        deleteButton.addEventListener("click", function() {
+          removeLocation(location);
+        });
+
+        listItem.appendChild(deleteButton);
+
+        savedLocationsList.appendChild(listItem);
+      });
+    }
+  } else {
+    console.log("Local storage is not supported.");
+  }
+
+  // Check if any saved locations are present, if not, show the save button
+  if (savedLocationsList && savedLocationsList.childElementCount === 0) {
+    var noSavedLocations = document.createElement("p");
+    noSavedLocations.textContent = "No saved locations found.";
+    savedLocationsList.appendChild(noSavedLocations);
+  }
+}
+
+function isLocationSaved(title) {
+  if (isLocalStorageSupported()) {
+    var savedLocations = localStorage.getItem("savedLocations");
+    if (savedLocations) {
+      var parsedLocations = JSON.parse(savedLocations);
+      return parsedLocations.some(function(savedLocation) {
+        return savedLocation.title === title;
+      });
+    }
+  }
+  return false;
+}
+
+// Load saved locations on page load
+window.addEventListener("DOMContentLoaded", function() {
+  displaySavedLocations();
+});
+
 function getLocation() {
   navigator.geolocation.getCurrentPosition(function(position) {
     var userLat = position.coords.latitude;
     var userLon = position.coords.longitude;
-    
+
     function initMap() {
       const map = new google.maps.Map(document.getElementById("map-container"), {
         zoom: 15,
@@ -95,6 +215,9 @@ function getLocation() {
                   <br>
                   <br>
                   <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(locations[index].title)}" target="_blank">Read More</a>
+                  <br>
+                  <br>
+                  <button class="save-location-button">Save Location</button>
                   `;
 
                   listItem.setAttribute("data-lat", locationLat);
@@ -107,6 +230,7 @@ function getLocation() {
                       // Call addRevealButtonListeners() when all locations are appended
                       addRevealButtonListeners();
                       addSetDestinationButtonListeners();
+                      addSaveLocationButtonListeners();
                     }
                   }, delay + index * delayIncrement);
 
@@ -231,25 +355,49 @@ function getLocation() {
       });
     }
 
-    function calculateAndDisplayRoute(startLat, startLon, endLat, endLon) {
-      directionsService.route(
-        {
-          origin: { lat: startLat, lng: startLon },
-          destination: { lat: endLat, lng: endLon },
-          travelMode: "WALKING"
-        },
-        function(response, status) {
-          if (status === "OK") {
-            directionsRenderer.setDirections(response);
-          } else {
-            window.alert("Directions request failed due to " + status);
-          }
+    function addSaveLocationButtonListeners() {
+      var saveLocationButtons = document.querySelectorAll(".save-location-button");
+      saveLocationButtons.forEach(function(button) {
+        var listItem = button.parentNode; // Get the parent <li> element
+        var pageTitleElement = listItem.querySelector(".page-title");
+        
+        if (pageTitleElement) {
+          var title = pageTitleElement.textContent;
+
+          button.addEventListener("click", function() {
+            var lat = listItem.getAttribute("data-lat");
+            var lon = listItem.getAttribute("data-lon");
+    
+            saveLocation(title, lat, lon);
+          });
         }
-      );
+      });
     }
+    
 
     initMap();
   });
+}
+
+// Display the route between the user's location and the selected destination
+function calculateAndDisplayRoute(userLat, userLon, destinationLat, destinationLon) {
+  var start = new google.maps.LatLng(userLat, userLon);
+  var end = new google.maps.LatLng(destinationLat, destinationLon);
+
+  directionsService.route(
+    {
+      origin: start,
+      destination: end,
+      travelMode: google.maps.TravelMode.DRIVING
+    },
+    function(response, status) {
+      if (status === google.maps.DirectionsStatus.OK) {
+        directionsRenderer.setDirections(response);
+      } else {
+        window.alert("Directions request failed due to " + status);
+      }
+    }
+  );
 }
 
 button.addEventListener("click", getLocation);
