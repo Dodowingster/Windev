@@ -147,6 +147,7 @@ function displaySavedLocations() {
         listItem.appendChild(document.createElement("br"));
         listItem.appendChild(saveDescriptionButton);
         listItem.appendChild(clearDescriptionButton);
+        listItem.appendChild(document.createElement("br"));
         listItem.appendChild(readMoreButton);
         listItem.appendChild(deleteButton);
       
