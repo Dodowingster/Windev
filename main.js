@@ -115,11 +115,17 @@ function displaySavedLocations() {
           openWikipediaPage(location.title);
         });
       
-        var descriptionInput = document.createElement("input");
+        var descriptionInput = document.createElement("textarea");
         descriptionInput.type = "text";
         descriptionInput.placeholder = "Add note";
         descriptionInput.classList.add("description-input");
         descriptionInput.value = location.description; // Set the input value to the saved description
+        descriptionInput.addEventListener("input", function() {
+          this.style.width = (this.value.length + 1) * 8 + "px";
+        });
+        descriptionInput.classList.add("description-input");
+        descriptionInput.style.resize = "vertical";
+        descriptionInput.style.overflow = "auto";
       
         var saveDescriptionButton = document.createElement("button");
         saveDescriptionButton.textContent = "Save Description";
@@ -128,14 +134,21 @@ function displaySavedLocations() {
           var description = descriptionInput.value;
           updateDescription(location, description);
         });
-        
-      
+
+        var clearDescriptionButton = document.createElement("button");
+        clearDescriptionButton.textContent = "Clear Description";
+        clearDescriptionButton.classList.add("clear-description-button");
+        clearDescriptionButton.addEventListener("click", function() {
+          clearDescription(descriptionInput);
+        });
+
         listItem.appendChild(deleteButton);
         listItem.appendChild(readMoreButton);
         listItem.appendChild(document.createElement("br"));
         listItem.appendChild(descriptionInput);
         listItem.appendChild(document.createElement("br"));
         listItem.appendChild(saveDescriptionButton);
+        listItem.appendChild(clearDescriptionButton);
       
         savedLocationsList.appendChild(listItem);
       });
@@ -151,6 +164,10 @@ function displaySavedLocations() {
     noSavedLocations.textContent = "No saved locations found.";
     savedLocationsList.appendChild(noSavedLocations);
   }
+}
+
+function clearDescription(descriptionInput) {
+  descriptionInput.value = "";
 }
 
 function openWikipediaPage(title) {
