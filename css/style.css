@@ -17,6 +17,7 @@ body {
   border: none;
   border-radius: 4px;
   animation: fade-in 1s ease-in;
+  margin-top: 5px;
 }
 
 .read-more-button,
