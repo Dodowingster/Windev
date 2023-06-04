@@ -520,8 +520,8 @@ h2 {
 .description-input {
   resize: vertical;
   overflow: auto;
-  max-width: 450px;
-  min-width: 450px;
+  max-width: 300px;
+  min-width: 300px;
   margin-top: 5px;
   animation: slide-down 0.3s ease-out;
 }
