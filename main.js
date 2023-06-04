@@ -20,13 +20,18 @@ function isLocalStorageSupported() {
   }
 }
 
+function saveLocationToLocalStorage(locations) {
+  localStorage.setItem("savedLocations", JSON.stringify(locations));
+}
+
 // Save location to local storage
-function saveLocation(title, lat, lon) {
+function saveLocation(title, lat, lon, description) {
   if (isLocalStorageSupported()) {
     var location = {
       title: title,
       lat: lat,
-      lon: lon
+      lon: lon,
+      description: description
     };
 
     var savedLocations = localStorage.getItem("savedLocations");
@@ -42,9 +47,9 @@ function saveLocation(title, lat, lon) {
       }
 
       parsedLocations.push(location);
-      localStorage.setItem("savedLocations", JSON.stringify(parsedLocations));
+      saveLocationToLocalStorage(parsedLocations);
     } else {
-      localStorage.setItem("savedLocations", JSON.stringify([location]));
+      saveLocationToLocalStorage([location]);
     }
 
     // Refresh the saved locations list
@@ -74,6 +79,16 @@ function removeLocation(location) {
 
 
 function displaySavedLocations() {
+
+  function updateDescription(location, description) {
+    location.description = description;
+    saveLocationToLocalStorage(parsedLocations);
+  }
+  
+  function saveLocationToLocalStorage(locations) {
+    localStorage.setItem("savedLocations", JSON.stringify(locations));
+  }
+  
   if (isLocalStorageSupported()) {
     var savedLocations = localStorage.getItem("savedLocations");
     var savedLocationsList = document.getElementById("saved-locations-list");
@@ -85,26 +100,46 @@ function displaySavedLocations() {
       parsedLocations.forEach(function(location) {
         var listItem = document.createElement("li");
         listItem.textContent = location.title;
-
+      
         var deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
         deleteButton.classList.add("delete-button");
         deleteButton.addEventListener("click", function() {
           removeLocation(location);
         });
-
+      
         var readMoreButton = document.createElement("button");
         readMoreButton.textContent = "Read More";
         readMoreButton.classList.add("read-more-button");
         readMoreButton.addEventListener("click", function() {
           openWikipediaPage(location.title);
         });
-
+      
+        var descriptionInput = document.createElement("input");
+        descriptionInput.type = "text";
+        descriptionInput.placeholder = "Add note";
+        descriptionInput.classList.add("description-input");
+        descriptionInput.value = location.description; // Set the input value to the saved description
+      
+        var saveDescriptionButton = document.createElement("button");
+        saveDescriptionButton.textContent = "Save Description";
+        saveDescriptionButton.classList.add("save-description-button");
+        saveDescriptionButton.addEventListener("click", function() {
+          var description = descriptionInput.value;
+          updateDescription(location, description);
+        });
+        
+      
         listItem.appendChild(deleteButton);
         listItem.appendChild(readMoreButton);
-
+        listItem.appendChild(document.createElement("br"));
+        listItem.appendChild(descriptionInput);
+        listItem.appendChild(document.createElement("br"));
+        listItem.appendChild(saveDescriptionButton);
+      
         savedLocationsList.appendChild(listItem);
       });
+      
     }
   } else {
     console.log("Local storage is not supported.");
